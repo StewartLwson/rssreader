@@ -18,7 +18,8 @@ $GLOBALS["config"] = array(
     ),
     // Config data for sessions
     "session" => array(
-        "session_name" => "user"
+        "session_name" => "user",
+        "token_name" => "token"
     )
 );
 

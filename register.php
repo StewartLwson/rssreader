@@ -2,34 +2,39 @@
 require_once 'core/init.php';
 
 if(Input::exists()) {
-    $validate = new Validate();
-    $validation = $validate->check($_POST, array(
-        'username' => array(
-            'required' => true,
-            'min' => 2,
-            'max' => 20,
-            'unique' => 'users'
-        ),
-        'password' => array(
-            'required' => true,
-            'min' => 6
-        ),
-        'password_verify' => array(
-            'required' => true,
-            'matches' => 'password'
-        ),
-        'name' => array(
-            'required' => true,
-            'min' => 2,
-            'max' => 50
-        )
-    ));
+    if(Token::check(Input::get('token'))) {
 
-    if ($validate->passed()) {
-        echo "Passed";
-    } else {
-        foreach($validation->errors() as $error) {
-            echo $error, "<br>";
+        echo "I have been run";
+
+        $validate = new Validate();
+        $validation = $validate->check($_POST, array(
+            'username' => array(
+                'required' => true,
+                'min' => 2,
+                'max' => 20,
+                'unique' => 'users'
+            ),
+            'password' => array(
+                'required' => true,
+                'min' => 6
+            ),
+            'password_verify' => array(
+                'required' => true,
+                'matches' => 'password'
+            ),
+            'name' => array(
+                'required' => true,
+                'min' => 2,
+                'max' => 50
+            )
+        ));
+
+        if ($validate->passed()) {
+            echo "Passed";
+        } else {
+            foreach($validation->errors() as $error) {
+                echo $error, "<br>";
+            }
         }
     }
 }
@@ -53,5 +58,6 @@ if(Input::exists()) {
         <input type="text" name="name" id="name" value="<?php echo escape(Input::get("name"));?>" autocomplete="off">
     </div>
 
+    <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
     <input type="submit" value="Register">
 </form>
