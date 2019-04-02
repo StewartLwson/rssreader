@@ -3,9 +3,6 @@ require_once 'core/init.php';
 
 if(Input::exists()) {
     if(Token::check(Input::get('token'))) {
-
-        echo "I have been run";
-
         $validate = new Validate();
         $validation = $validate->check($_POST, array(
             'username' => array(
@@ -30,7 +27,23 @@ if(Input::exists()) {
         ));
 
         if ($validate->passed()) {
-            Session::flash("success", "You registers successfully!");
+            $user = new User();
+
+            $salt = Hash::salt(32);
+
+            try {
+                $user->create(array(
+                    "username" => Input::get("username"),
+                    "password" => Hash::make(Input::get("password"), $salt),
+                    "salt" => $salt,
+                    "name" => Input::get("name"),
+                    "joined" => date("Y-m-d H:i:s"),
+                    "group" => 1
+                ));
+            } catch(Exception $e) {
+                die($e->getMessage());
+            }
+            Session::flash("home", "You have registered successfully!");
             header("location:index.php");
         } else {
             foreach($validation->errors() as $error) {
