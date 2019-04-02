@@ -44,6 +44,10 @@ class User {
         }
     }
 
+    public function logout() {
+        Session::delete($this->_sessionName);
+    }
+
     public function login($username = null, $password = null) {
         $user = $this->find($username);
         if($user) {
