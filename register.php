@@ -44,7 +44,7 @@ if(Input::exists()) {
                 die($e->getMessage());
             }
             Session::flash("home", "You have registered successfully!");
-            header("location:index.php");
+            Redirect::to('index.php');
         } else {
             foreach($validation->errors() as $error) {
                 echo $error, "<br>";
