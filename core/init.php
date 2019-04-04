@@ -9,7 +9,7 @@ $GLOBALS["config"] = array(
         "host" => "127.0.0.1",
         "username" => "root",
         "password" => "toor",
-        "db" => "ooplr"
+        "db" => "rssreader"
     ),
     // Config data for cookies
     "remember" => array(
