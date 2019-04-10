@@ -13,6 +13,7 @@ $user = new User();
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="js/script.js"></script>
 	<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -31,7 +32,7 @@ $user = new User();
 			</li>
 			<?php if($user->isLoggedIn()) { ?>
 			<li class="nav-item active">
-				<a class="nav-link" href="profile.php"><?php echo escape($user->data()->username);?></a>
+				<a class="nav-link" href="profile.php">Profile</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="logout.php">Logout</a>
@@ -48,3 +49,10 @@ $user = new User();
 	</div>
 </div>
 </nav>
+<h1><?php echo escape($user->data()->username);?></h1>
+<form action="" method="post">
+    <div class="field">
+        <label for="feed">New Feed</label>
+        <input type="text" name="feed" id="link" autocomplete="off">
+    <input id="newfeed" type="submit" value="Add">
+</form>
