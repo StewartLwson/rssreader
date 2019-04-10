@@ -16,39 +16,45 @@ $(document).ready(function() {
         req.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var xml = this.responseXML;
-
-                var items = xml.getElementsByTagName("item");
-                var titles = xml.getElementsByTagName("title");
-                var descriptions = xml.getElementsByTagName("description");
-                var dates = xml.getElementsByTagName("pubDate");
-                var images = xml.getElementsByTagName("media:thumbnail");
-
-                for (var i = 1; i < 10; i++) {
-                    title = ""
-                    date = ""
-                    description = ""
-                    image = ""
-                    if (titles[i] != undefined) {
-                        title = titles[i].innerHTML
+                console.log(xml)
+                images = xml.getElementsByTagName("media:thumbnail");
+                rss = $(xml);
+                source = rss.find("channel").find("title").first().text()
+                source_link = rss.find("channel").find("link").first().text()
+                rss.find("item").each(function(i) {
+                    item = $(this);
+                    title = "";
+                    date = "";
+                    link = "";
+                    description = "";
+                    image = "";
+                    if (item.find("title") != undefined) {
+                        title = item.find("title").text();
                     }
-                    if (dates[i] != undefined) {
-                        date = dates[i].innerHTML
+                    if (item.find("pubDate") != undefined) {
+                        date = item.find("pubDate").text();
                     }
-                    if (descriptions[i] != undefined) {
-                        description = descriptions[i].innerHTML
+                    if (item.find("description") != undefined) {
+                        description = item.find("description").text();
+                    }
+                    if (item.find("link") != undefined) {
+                        link = item.find("link").text();
                     }
                     if (images[i] != undefined) {
                         image = images[i].getAttribute("url")
+                    } else {
+                        image = "none"
                     }
                     article = {
-                        title: title,
+                        title: "<a href=" + source_link + ">" + source + "</a>: " + title,
                         date: date,
+                        link: link,
                         description: description,
                         image: image
-                    }
-                    feed.push(article)
-
-                }
+                    };
+                    feed.push(article);
+                    return i < 10;
+                });
             }
         };
 
@@ -62,10 +68,11 @@ $(document).ready(function() {
         console.log(article)
         title = "<h5>" + article.title + "</h5><br>"
         body = ""
-        if (article.image != "") {
-            body += "<img height=250rem width=400rem src=" + article.image + "></img>";
+        if (article.image != "none") {
+            console.log(article.image)
+            body += "<img height=250rem width=400rem src=" + article.image + "></img><br>";
         }
-        body += "<p><br>" + article.date + "<br>" + article.description + "</p><br>"
+        body += "<p>" + article.date + " <br> " + article.description + " <br> <a href = " + article.link + " > Link </a><br></p> <br> "
         document.getElementById("feed").innerHTML += title + body
     }
 
