@@ -14,18 +14,18 @@ $(document).ready(function() {
         req.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var xml = this.responseXML;
-                console.log(xml);
 
+                var everything = xml.getElementsByTagName("*");
                 var titles = xml.getElementsByTagName("title");
                 var descriptions = xml.getElementsByTagName("description");
                 var dates = xml.getElementsByTagName("pubDate");
                 var images = xml.getElementsByTagName("media:thumbnail");
 
-                console.log(titles)
+                console.log(xml)
 
                 feed = []
 
-                for (var i = 1; i < titles.length; i++) {
+                for (var i = 0; i < titles.length; i++) {
                     title = ""
                     date = ""
                     description = ""
@@ -51,26 +51,17 @@ $(document).ready(function() {
                     feed.push(article)
                 }
 
-                feed.sort(function(a, b) {
-                    date1 = ""
-                    date2 = ""
-                    for (var i = 5; i <= 15; i++) {
-                        date1 += b.date[i]
-                        date2 += a.date[i]
-                    }
-                    return Date(date1) - Date(date2);
-                })
-
                 for (var i = 0; i < feed.length; i++) {
-                    title = "<h1>" + feed[i].title + "</h1><br>"
-                    body = "<img src=" + feed[i].image + "/><br><p>" + feed[i].date + "<br>" + feed[i].description + "</p><br>"
+                    title = "<h5>" + feed[i].title + "</h5><br>"
+                    console.log()
+                    body = "<img height=250rem width=400rem src=" + feed[i].image + "></img><p><br>" + feed[i].date + "<br>" + feed[i].description + "</p><br>"
                     document.getElementById("feed").innerHTML += title + body
-
                 }
             }
         };
 
-        req.open("GET", "https://cors-anywhere.herokuapp.com/" + link, true);
+        cors = "https://cors-anywhere.herokuapp.com/"
+        req.open("GET", cors + link, true);
         req.send();
 
     }
@@ -78,20 +69,12 @@ $(document).ready(function() {
     $.getJSON({
         url: "http://localhost/rssreader/feed.php",
         success: function(result) {
-            result.forEach(function(entry) {
-                url = entry["rss_link"];
-                makeRequest(url);
-            });
+            if (result.length > 0) {
+                result.forEach(function(entry) {
+                    url = entry["rss_link"];
+                    makeRequest(url);
+                });
+            }
         }
     });
-
-    $("#newfeed").click(function() {
-        $.ajax({
-            url: "http://localhost/rssreader/feed.php?link=" + $("#link").val(),
-            type: "POST",
-            error: function(e) {
-                console.log(e);
-            }
-        })
-    })
 });

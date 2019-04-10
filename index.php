@@ -16,7 +16,7 @@ $user = new User();
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="js/script.js"></script>
+	<script src="js/feed_script.js"></script>
 	<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -53,8 +53,42 @@ $user = new User();
 </div>
 </nav>
 
+<?php if($user->isLoggedIn()) { ?>
+<!-- Welcome -->
+<div class="container-fluid padding">
+<div class="row welcome text-center">
+	<div class="col-12">
+		<h1 class="display-4">Hello, <?php echo escape($user->data()->username);?></h1>
+	</div>
+	<hr>
+	<div class="col-12">
+		<p class="lead">Welcome to your RSS feed.</p>
+		<p>If you would like to add a new source to your feed, you can do so on your <a href="profile.php">Profile</a>.</p>
+	</div>
+</div>
+</div>
+
 <!-- Main Feed -->
-<div id="feed">
+<div class="container-fluid padding">
+<div class="row text-center padding">
+	<div id="feed" class="col-12">
+<hr class="my-4">
+</div>
+
+<?php } else { ?>
+<div class="container-fluid padding">
+<div class="row welcome text-center">
+	<div class="col-12">
+		<h1 class="display-4">Hello!</p>
+	</div>
+	<hr>
+	<div class="col-12">
+		<p class="lead">Welcome to the RSS Reader. In order to use the reader, you must have an account.</p>
+		<p>You can either <a href="login.php">Login</a> or <a href="register.php">Create a Profile</a>.</p>
+	</div>
+</div>
+</div>
+<?php } ?>
 
 </body>
 

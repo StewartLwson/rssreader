@@ -126,7 +126,7 @@ class DB {
 
     // Delete method for database
     public function delete($table, $where) {
-        return $this->action("DELETE *", $table, $where);
+        return $this->action("DELETE ", $table, $where);
     }
 
     // Return all results

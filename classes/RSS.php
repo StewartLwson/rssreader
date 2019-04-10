@@ -28,7 +28,7 @@
 
         // Delete RSS feed
         public function delete($feed_id) {
-            $feed = $this->_db->get($this->_table, array("id", "=", $feed_id));
+            $this->_db->delete($this->_table, array("id", "=", $feed_id));
         }
 
     }

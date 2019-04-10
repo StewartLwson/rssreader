@@ -13,7 +13,7 @@ $user = new User();
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="js/script.js"></script>
+	<script src="js/profile_script.js"></script>
 	<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -49,10 +49,53 @@ $user = new User();
 	</div>
 </div>
 </nav>
-<h1><?php echo escape($user->data()->username);?></h1>
-<form action="" method="post">
-    <div class="field">
-        <label for="feed">New Feed</label>
-        <input type="text" name="feed" id="link" autocomplete="off">
-    <input id="newfeed" type="submit" value="Add">
-</form>
+
+<?php if($user->isLoggedIn()) { ?>
+<!-- Welcome -->
+<div class="container-fluid padding">
+<div class="row welcome text-center">
+	<div class="col-12">
+		<h1 class="display-4"><?php echo escape($user->data()->username);?>'s Profile</h1>
+	</div>
+	<hr>
+</div>
+</div>
+
+<!-- Main Feed -->
+<div class="container-fluid padding">
+<div class="row text-center padding">
+	<div id="feed" class="col-12">
+		<h4>Your Current Sources</h4>
+		<p>These are the RSS sources that will appear on your feed on the main <a href="index.php">Feed</a> page. If you would like to remove one, click on it and press the remove button.</p>
+		<div id="feed_list">
+		</div>
+		<form action="" method="post">
+			<input id="remove_source" type="submit" value="Remove">
+		</form>
+	</div>
+	<div id="feed" class="col-12">
+	    <h4>Add New Source to your Feed</h4>
+		<p>Copy and paste the link to an RSS source and enter it into the box below to add it to your feed</p>
+		<form action="" method="post">
+			<div class="field">
+				<label for="new_feed">Feed Link</label>
+				<input type="text" name="new_feed_link" id="link" autocomplete="off">
+			<input id="add_source" type="submit" value="Add">
+		</form>
+	</div>
+	</div>
+<hr class="my-4">
+</div>
+<?php } else { ?>
+<div class="container-fluid padding">
+<div class="row welcome text-center">
+	<div class="col-12">
+		<h1 class="display-4">Sorry, you must be logged in to do that...</p>
+	</div>
+	<hr>
+	<div class="col-12">
+		<p>You can either <a href="login.php">Login</a> or <a href="register.php">Create a Profile</a>.</p>
+	</div>
+</div>
+</div>
+<?php } ?>
