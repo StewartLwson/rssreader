@@ -64,6 +64,7 @@ $user = new User();
 	<div class="col-12">
 		<p class="lead">Welcome to your RSS feed.</p>
 		<p>If you would like to add a new source to your feed, you can do so on your <a href="profile.php">Profile</a>.</p>
+		<button type="button" id="get_feed">Get Feed!</button>
 	</div>
 </div>
 </div>

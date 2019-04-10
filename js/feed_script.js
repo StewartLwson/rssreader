@@ -2,6 +2,8 @@ $(document).ready(function() {
 
     function makeRequest(link) {
 
+        feed = []
+
         if (window.XMLHttpRequest) {
             req = new XMLHttpRequest();
         } else if (window.ActiveXObject) {
@@ -15,17 +17,13 @@ $(document).ready(function() {
             if (this.readyState == 4 && this.status == 200) {
                 var xml = this.responseXML;
 
-                var everything = xml.getElementsByTagName("*");
+                var items = xml.getElementsByTagName("item");
                 var titles = xml.getElementsByTagName("title");
                 var descriptions = xml.getElementsByTagName("description");
                 var dates = xml.getElementsByTagName("pubDate");
                 var images = xml.getElementsByTagName("media:thumbnail");
 
-                console.log(xml)
-
-                feed = []
-
-                for (var i = 0; i < titles.length; i++) {
+                for (var i = 1; i < 10; i++) {
                     title = ""
                     date = ""
                     description = ""
@@ -40,7 +38,7 @@ $(document).ready(function() {
                         description = descriptions[i].innerHTML
                     }
                     if (images[i] != undefined) {
-                        image = images[i - 1].getAttribute("url")
+                        image = images[i].getAttribute("url")
                     }
                     article = {
                         title: title,
@@ -49,13 +47,7 @@ $(document).ready(function() {
                         image: image
                     }
                     feed.push(article)
-                }
 
-                for (var i = 0; i < feed.length; i++) {
-                    title = "<h5>" + feed[i].title + "</h5><br>"
-                    console.log()
-                    body = "<img height=250rem width=400rem src=" + feed[i].image + "></img><p><br>" + feed[i].date + "<br>" + feed[i].description + "</p><br>"
-                    document.getElementById("feed").innerHTML += title + body
                 }
             }
         };
@@ -65,6 +57,31 @@ $(document).ready(function() {
         req.send();
 
     }
+
+    function addToFeed(article) {
+        console.log(article)
+        title = "<h5>" + article.title + "</h5><br>"
+        body = ""
+        if (article.image != "") {
+            body += "<img height=250rem width=400rem src=" + article.image + "></img>";
+        }
+        body += "<p><br>" + article.date + "<br>" + article.description + "</p><br>"
+        document.getElementById("feed").innerHTML += title + body
+    }
+
+    function applyFeed() {
+        document.getElementById("feed").innerHTML = ""
+        feed.sort(function(a, b) {
+            return new Date(b.date) - new Date(a.date);
+        });
+        for (var i = 0; i < feed.length; i++) {
+            addToFeed(feed[i])
+        }
+    }
+
+    $("#get_feed").click(function() {
+        applyFeed()
+    });
 
     $.getJSON({
         url: "http://localhost/rssreader/feed.php",
