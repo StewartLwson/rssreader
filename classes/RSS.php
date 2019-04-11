@@ -1,16 +1,10 @@
-<?php
+<?php // class that handles API for user RSS feeds
     class RSS {
-        // DB Stuff
         private $_db,
                 $_table = 'rss';
 
-        // RSS Properties
-        public $id,
-               $rss_link;
-
-        // Constructor
         public function __construct($db) {
-            $this->_db = $db;
+            $this->_db = $db; // connects to db
         }
 
         // Get RSS feeds for user

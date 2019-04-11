@@ -1,4 +1,4 @@
-<?php
+<?php //class that handles API for the user
 class User {
     private $_db,
             $_data,
@@ -29,6 +29,10 @@ class User {
         if(!$this->_db->insert("users", $fields)) {
             throw new Exception("There was a problem creating an account.");
         }
+    }
+
+    public function login_time($id, $fields = array()) {
+        $this->_db->update("users", $id, $fields);
     }
 
     public function find($user = null) {

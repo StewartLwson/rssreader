@@ -37,14 +37,12 @@ if(Input::exists()) {
                     "password" => Hash::make(Input::get("password"), $salt),
                     "salt" => $salt,
                     "name" => Input::get("name"),
-                    "joined" => date("Y-m-d H:i:s"),
-                    "group" => 1
+                    "joined" => date("Y-m-d H:i:s")
                 ));
             } catch(Exception $e) {
                 die($e->getMessage());
             }
-            Session::flash("home", "You have registered successfully! Please login with your credentials");
-            Redirect::to('index.php');
+            Redirect::to('login.php');
         } else {
             foreach($validation->errors() as $error) {
                 echo $error, "<br>";
@@ -92,25 +90,35 @@ if(Input::exists()) {
 <?php if($user->isLoggedIn()) { ?>
 You are already logged in.
 <?php } else { ?>
-<form action="" method="post">
-    <div class="field">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" value="<?php echo escape(Input::get("username"));?>" autocomplete="off">
-    </div>
-    <div class="field">
-        <label for="password">Choose a password</label>
-        <input type="password" name="password" id="password" value="" autocomplete="off">
-    </div>
-    <div class="field">
-        <label for="password_verify">Verify Password</label>
-        <input type="password" name="password_verify" id="password_verify" value="" autocomplete="off">
-    </div>
-    <div class="field">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" value="<?php echo escape(Input::get("name"));?>" autocomplete="off">
-    </div>
+    <div class="container-fluid padding">
+<div class="row welcome text-center">
+	<div class="col-12">
+		<h1 class="display-4">Register</p>
+	</div>
+	<hr>
+    <div class="col-12">
+        <form action="" method="post">
+        <div class="field">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" value="<?php echo escape(Input::get("username"));?>" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="password">Choose a password</label>
+            <input type="password" name="password" id="password" value="" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="password_verify">Verify Password</label>
+            <input type="password" name="password_verify" id="password_verify" value="" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" value="<?php echo escape(Input::get("name"));?>" autocomplete="off">
+        </div>
 
-    <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
-    <input type="submit" value="Register">
-<?php } ?>
-</form>
+        <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
+        <input type="submit" value="Register">
+        <?php } ?>
+        </form>
+    </div>
+</div>
+</div>

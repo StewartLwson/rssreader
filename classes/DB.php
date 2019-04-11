@@ -2,6 +2,7 @@
 // Uses Singleton pattern to allow for one instance of connection
 class DB {
    private static $_instance = null;
+
    private $_pdo,
            $_query,
            $_error = false,
@@ -16,10 +17,39 @@ class DB {
                                     ';dbname=' . Config::get('mysql/db'),
                                     Config::get('mysql/username'),
                                     Config::get('mysql/password'));
+            // $this->initDatabase(); Uncomment to setup database if not already setup
         } catch(PDOException $e) {
             die($e->getMessage());
         }
     }
+
+    public function initDatabase() { // Initializes DB for web app
+		$users_query = "DROP TABLE users"; // Drops users table
+		$rss_query = "DROP TABLE rss"; // Drops rss table
+		$this->query($users_query);
+		$this->query($rss_query);
+
+		$users_query = "CREATE TABLE users (
+				id int (11) NOT NULL AUTO_INCREMENT,
+				username varchar (20) NOT NULL,
+				password varchar (64) NOT NULL,
+				salt varchar(32) NOT NULL,
+				name varchar(50) NOT NULL,
+				joined datetime NOT NULL,
+				last_login datetime NOT NULL,
+				PRIMARY KEY (id)
+			);"; // Creates users tables
+
+		$rss_query = "CREATE TABLE rss (
+				id int (11) NOT NULL AUTO_INCREMENT,
+				user_id varchar (11) NOT NULL,
+				rss_link text NOT NULL,
+				PRIMARY KEY (id)
+			);"; // Creates rss table
+
+		$this->query($users_query);
+        $this->query($rss_query);
+	}
 
     // Initializes/gets the instance of connection
     public static function getInstance() {

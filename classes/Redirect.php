@@ -1,17 +1,7 @@
-<?php
-class Redirect {
-    public static function to($location = null) {
-        if($location) {
-            if (is_numeric($location)) {
-                switch($location) {
-                    case 404:
-                        header('HTTP/1.0 404 Not Found');
-                        include 'includes/errors/404.php';
-                        exit();
-                        break;
-                }
-            }
-            header('Location: ' . $location);
+<?php class Redirect { // class that handles redirects
+    public static function to($location = null) { // redirects to specified location, default is null
+        if($location) { // if location exists
+            header('Location: ' . $location); // sets location header
             exit();
         }
     }

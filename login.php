@@ -18,6 +18,7 @@ if(Input::exists()) {
             $login = $user->login(Input::get('username'), Input::get('password'));
 
             if($login) {
+                $user->login_time($user->data()->id, array("last_login" => time()));
                 Redirect::to('index.php');
             } else {
                 echo '<p>Sorry, login failed...</p>';
@@ -69,17 +70,27 @@ if(Input::exists()) {
 <?php if($user->isLoggedIn()) { ?>
 You are already logged in.
 <?php } else { ?>
-<form action="" method="post">
-    <div class="field">
-        <label for="username">Username</label>
-        <input type="text" name="username" autocomplete="off">
-    </div>
-    <div class="field">
-        <label for="password">Password</label>
-        <input type="password" name="password" autocomplete="off">
-    </div>
+    <div class="container-fluid padding">
+<div class="row welcome text-center">
+	<div class="col-12">
+		<h1 class="display-4">Login</p>
+	</div>
+	<hr>
+	<div class="col-12">
+        <form action="" method="post">
+        <div class="field">
+            <label for="username">Username</label>
+            <input type="text" name="username" autocomplete="off">
+        </div>
+        <div class="field">
+            <label for="password">Password</label>
+            <input type="password" name="password" autocomplete="off">
+        </div>
 
-    <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
-    <input type="submit" value="Login">
-<?php } ?>
-</form>
+        <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
+        <input type="submit" value="Login">
+        <?php } ?>
+        </form>
+	</div>
+</div>
+</div>

@@ -1,6 +1,7 @@
-$(document).ready(function() {
+// script that runs on profile page
+$(document).ready(function() { // run when document is fully loaded
 
-    $.getJSON({
+    $.getJSON({ // gets json object from rss api
         url: "http://localhost/rssreader/feed.php",
         success: function(result) {
             if (result.length > 0) {
@@ -13,45 +14,37 @@ $(document).ready(function() {
         }
     });
 
-    to_remove = []
+    to_remove = [] // array of sources user wants to remove
 
-    $(document).on("click", ".source", function() {
+    $(document).on("click", ".source", function() { // boldens the source user wants to remove
         id = $(this).attr("id");
         index = to_remove.indexOf(id)
-        if (index >= 0) {
+        if (index >= 0) { // checks if item already exists in list
             to_remove.pop(index)
-            $(this).css("background-color", "white");
+            $(this).css("font-weight", "");
         } else {
             to_remove.push(id);
-            $(this).css("background-color", "yellow");
+            $(this).css("font-weight", "bold");
         }
-        console.log(to_remove)
     })
 
-    $("#remove_source").click(function() {
+    $("#remove_source").click(function() { // iterates through removal list
         for (var i = 0; i < to_remove.length; i++) {
-            console.log("http://localhost/rssreader/feed.php?id=" + to_remove[i])
             $.ajax({
-                url: "http://localhost/rssreader/feed.php?id=" + to_remove[i],
+                url: "http://localhost/rssreader/feed.php?id=" + to_remove[i], // makes request to remove item
                 type: "DELETE",
-                error: function(e) {
-                    console.log(e);
-                }
+                error: function(e) {}
             })
 
         }
     })
 
-    $("#add_source").click(function() {
+    $("#add_source").click(function() { // adds source
         $.ajax({
-            url: "http://localhost/rssreader/feed.php?link=" + $("#link").val(),
+            url: "http://localhost/rssreader/feed.php?link=" + $("#link").val(), // makes request to add source
             type: "POST",
-            success: function() {
-                console.log("success")
-            },
-            error: function(e) {
-                console.log(e);
-            }
+            success: function() {},
+            error: function(e) {}
         })
     })
 });
